@@ -6,3 +6,9 @@ https://www.youtube.com/watch?v=cLKLqpxPSws
 
 ## Source Git 
 https://github.com/jarrodwatts/reddit-clone
+
+## My Git
+https://github.com/samedan/2022.09-reddit-clone
+
+## React Hook Form
+https://react-hook-form.com/
