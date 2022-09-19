@@ -12,3 +12,6 @@ https://github.com/samedan/2022.09-reddit-clone
 
 ## React Hook Form
 https://react-hook-form.com/
+
+## AWS Docs
+https://docs.amplify.aws/lib/auth/emailpassword/q/platform/js/
