@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import { useUser } from "../context/AuthContext";
 import { listPosts } from "../graphql/queries";
 import { API } from "aws-amplify";
-import { Post } from "../API";
+import { ListPostsQuery, Post } from "../API";
+import PostPreview from "../components/PostPreview";
 
 export default function Index() {
   const { user } = useUser();
@@ -15,10 +14,13 @@ export default function Index() {
     const fetchPostsFromApi = async (): Promise<Post[]> => {
       const allPosts = (await API.graphql({
         query: listPosts,
-      })) as { data: Post[]; errors: any[] };
+      })) as {
+        data: ListPostsQuery;
+        errors: any[];
+      };
       if (allPosts.data) {
-        setPosts(allPosts.data);
-        return allPosts.data;
+        setPosts(allPosts.data.listPosts.items as Post[]);
+        return allPosts.data.listPosts.items as Post[];
       } else {
         throw new Error("Could not read posts");
       }
@@ -31,12 +33,10 @@ export default function Index() {
   console.log("Posts", posts);
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Next.js example
-        </Typography>
-      </Box>
+    <Container maxWidth="md">
+      {posts.map((post) => (
+        <PostPreview post={post} key={post.id} />
+      ))}
     </Container>
   );
 }

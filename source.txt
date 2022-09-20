@@ -15,3 +15,16 @@ https://react-hook-form.com/
 
 ## AWS Docs
 https://docs.amplify.aws/lib/auth/emailpassword/q/platform/js/
+
+## Amplify Commands
+> Verify schema.graphql
+amplify api gql-compile
+> Upload schema
+amplify push
+> Write files (mutations, queries etc)
+amplify codegen
+> Solve error : 
+amplify auth update
+
+## FALLBACK - What gets prerendered on the server
+https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false

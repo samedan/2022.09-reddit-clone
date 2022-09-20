@@ -22,6 +22,7 @@ const theme = createTheme({
       primary: "#fff",
       secondary: "rgba(255, 255, 255, 0.7)",
       disabled: "rgba(255, 255, 255, 0.38)",
+      fontWeight: "normal",
       // hint: "rgba(255, 255, 255, 0.38)",
     },
   },

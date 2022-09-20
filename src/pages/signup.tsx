@@ -115,7 +115,7 @@ export default function Signup() {
           <TextField
             id="username"
             label="Username"
-            variant="outlined"
+            // variant="outlined"
             error={errors.username ? true : false}
             type="text"
             helperText={errors.username ? errors.username.message : null}
