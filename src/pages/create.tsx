@@ -4,6 +4,8 @@ import Container from "@mui/material/Container";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField, Grid, Snackbar, Alert, Button } from "@mui/material";
 import ImageDropzone from "../components/ImageDropzone";
+import { Storage } from "aws-amplify";
+import { v4 as uuid } from "uuid";
 
 interface Props {}
 interface IFormInput {
@@ -13,7 +15,7 @@ interface IFormInput {
 }
 
 export default function Create({}: Props): ReactElement {
-  const [file, setFile] = useState<string>();
+  const [file, setFile] = useState<File>();
   const {
     register,
     formState: { errors },
@@ -21,6 +23,21 @@ export default function Create({}: Props): ReactElement {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (file) {
+      // user uploaded file
+      // send to S3 bucket
+      try {
+        await Storage.put(
+          uuid(),
+          file
+          // , {  contentType:  }
+        );
+      } catch (error) {
+        console.log("error uploading file: ", error);
+      }
+    }
+
+    console.log(file);
     console.log(data);
   };
 
@@ -82,7 +99,9 @@ export default function Create({}: Props): ReactElement {
 
           {/* Button */}
           <Grid item>
-            <Button variant="contained">Create post</Button>
+            <Button variant="contained" type="submit">
+              Create post
+            </Button>
           </Grid>
         </Grid>
       </form>

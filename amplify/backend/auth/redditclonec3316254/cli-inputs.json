@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "redditclonec3316254_identitypool_c3316254",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "redditc3316254",
     "userPoolName": "redditclonec3316254_userpool_c3316254",
     "autoVerifiedAttributes": [

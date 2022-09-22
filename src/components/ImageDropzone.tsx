@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import { Typography, Grid } from "@mui/material";
 
 interface Props {
-  file: string;
-  setFile: React.Dispatch<React.SetStateAction<string>>;
+  file: File;
+  setFile: React.Dispatch<React.SetStateAction<File>>;
 }
 
 export default function ImageDropzone({ file, setFile }: Props) {
@@ -21,7 +21,8 @@ export default function ImageDropzone({ file, setFile }: Props) {
       //     })
       //   )
       // );
-      setFile(URL.createObjectURL(acceptedFiles[0]));
+      // setFile(URL.createObjectURL(acceptedFiles[0]));
+      setFile(acceptedFiles[0]);
     },
   });
 
@@ -106,7 +107,7 @@ export default function ImageDropzone({ file, setFile }: Props) {
             </Grid>
             <Grid item>
               <img
-                src={file}
+                src={URL.createObjectURL(file)}
                 style={{ width: "auto", maxWidth: 200 }}
                 alt="your image"
               />
