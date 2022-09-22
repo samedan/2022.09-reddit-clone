@@ -1,8 +1,11 @@
 import React, { ReactElement } from "react";
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
-import { API, withSSRContext } from "aws-amplify";
+import { withSSRContext } from "aws-amplify";
 import { listPosts, getPost } from "../../graphql/queries";
-import { GetPostQuery, ListPostsQuery, Post } from "../../API";
+import { GetPostQuery, ListPostsQuery, Post, Comment } from "../../API";
+import PostPreview from "../../components/PostPreview";
+import { Container } from "@mui/system";
+import PostComment from "./../../components/Comment";
 
 interface Props {
   post: Post;
@@ -11,7 +14,16 @@ interface Props {
 export default function IndividualPost({ post }: Props): ReactElement {
   console.log("Post: ", post);
 
-  return <div>IndividaulPost</div>;
+  return (
+    <Container maxWidth="md">
+      <PostPreview post={post} />
+      {/* Comments */}
+      {post.comments.items &&
+        post.comments.items.map((comment) => (
+          <PostComment key={comment.id} comment={comment} />
+        ))}
+    </Container>
+  );
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

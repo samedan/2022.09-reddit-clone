@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import formatDatePosted from "../lib/formatDatePosted";
 
 interface Props {
   post: Post;
@@ -16,17 +17,6 @@ interface Props {
 
 export default function PostPreview({ post }: Props): ReactElement {
   const router = useRouter();
-
-  const convertDateToElapsed = (date: string): string => {
-    const now = new Date(Date.now());
-    const current = new Date(date);
-    const diff = now.getTime() - current.getTime();
-    console.log("diff", diff / 1000 / 60);
-    if (diff / 1000 / 60 < 60) {
-      return (diff / 1000 / 60).toFixed(0) + " minutes ago";
-    }
-    return (diff / 1000 / 60 / 60).toFixed(0) + " hours ago";
-  };
 
   return (
     <>
@@ -73,7 +63,7 @@ export default function PostPreview({ post }: Props): ReactElement {
               <Grid container direction="column" alignItems="flex-start">
                 <Grid item>
                   <Typography variant="body1">
-                    Posted {convertDateToElapsed(post.createdAt)} by{" "}
+                    Posted {formatDatePosted(post.createdAt)} by{" "}
                     <b>{post.owner}</b>
                   </Typography>
                 </Grid>

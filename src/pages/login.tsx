@@ -43,11 +43,12 @@ export default function Login() {
   // const { control, handleSubmit } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const amplifyUser = await Auth.signIn(data.username, data.password);
-    if (amplifyUser) {
+    try {
+      await Auth.signIn(data.username, data.password);
       router.push("/");
-    } else {
-      throw new Error("Something went wrong");
+    } catch (error) {
+      setSignInError(error.message);
+      setOpen(true);
     }
   };
 
@@ -71,15 +72,15 @@ export default function Login() {
             type="text"
             helperText={errors.username ? errors.username.message : null}
             {...register("username", {
-              required: { value: true, message: "Please enter a username" },
-              minLength: {
-                value: 3,
-                message: "Please enter a username between 3-16 characters",
-              },
-              maxLength: {
-                value: 16,
-                message: "Please enter a username between 3-16 characters",
-              },
+              // required: { value: true, message: "Please enter a username" },
+              // minLength: {
+              //   value: 3,
+              //   message: "Please enter a username between 3-16 characters",
+              // },
+              // maxLength: {
+              //   value: 16,
+              //   message: "Please enter a username between 3-16 characters",
+              // },
             })}
           />
         </Grid>
@@ -93,11 +94,11 @@ export default function Login() {
             type="password"
             helperText={errors.password ? errors.password.message : null}
             {...register("password", {
-              required: { value: true, message: "Please enter a password" },
-              minLength: {
-                value: 8,
-                message: "Please enter a password with at least 8 characters",
-              },
+              // required: { value: true, message: "Please enter a password" },
+              // minLength: {
+              //   value: 8,
+              //   message: "Please enter a password with at least 8 characters",
+              // },
             })}
           />
         </Grid>

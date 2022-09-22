@@ -9,6 +9,7 @@ import theme from "../theme";
 import { Amplify, Auth } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AuthContext from "../context/AuthContext";
+import Header from "../components/Header";
 Amplify.configure({ ...awsmobile, ssr: true });
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <AuthContext>
         <ThemeProvider theme={theme}>
+          <Header />
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...pageProps} />
