@@ -4,8 +4,15 @@ import Container from "@mui/material/Container";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField, Grid, Snackbar, Alert, Button } from "@mui/material";
 import ImageDropzone from "../components/ImageDropzone";
-import { Storage } from "aws-amplify";
-import { v4 as uuid } from "uuid";
+import { API, Storage } from "aws-amplify";
+import { v4 as uuidv4 } from "uuid";
+import { createPost } from "./../graphql/mutations";
+import {
+  CreatePostInput,
+  CreatePostMutation,
+  CreatePostMutationVariables,
+} from "../API";
+import { useRouter } from "next/router";
 
 interface Props {}
 interface IFormInput {
@@ -16,6 +23,8 @@ interface IFormInput {
 
 export default function Create({}: Props): ReactElement {
   const [file, setFile] = useState<File>();
+
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -25,16 +34,45 @@ export default function Create({}: Props): ReactElement {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (file) {
       // user uploaded file
+      const imagePath = uuidv4();
       // send to S3 bucket
       try {
-        await Storage.put(
-          uuid(),
-          file
-          // , {  contentType:  }
-        );
+        await Storage.put(imagePath, file, { contentType: file.type });
+        // once the Image is uploaded
+        // const createNewPostMutationVariables: CreatePostMutationVariables;
+        const createNewPostInput: CreatePostInput = {
+          title: data.title,
+          contents: data.content,
+          image: imagePath,
+          upvotes: 0,
+          downvotes: 0,
+          // createdAt, updatedAt, owner
+        };
+        const createNewPost = (await API.graphql({
+          query: createPost,
+          variables: { input: createNewPostInput },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as { data: CreatePostMutation };
+        console.log("New Post created successfully: ", createNewPost);
+        router.push(`/post/${createNewPost.data.createPost.id}`);
       } catch (error) {
         console.log("error uploading file: ", error);
       }
+    } else {
+      const createNewPostWithoutImageInput: CreatePostInput = {
+        title: data.title,
+        contents: data.content,
+        upvotes: 0,
+        downvotes: 0,
+        // createdAt, updatedAt, owner
+      };
+      const createNewPostWithoutImage = (await API.graphql({
+        query: createPost,
+        variables: { input: createNewPostWithoutImageInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as { data: CreatePostMutation };
+      console.log("New Post created successfully: ", createNewPostWithoutImage);
+      router.push(`/post/${createNewPostWithoutImage.data.createPost.id}`);
     }
 
     console.log(file);

@@ -18,6 +18,7 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { Auth } from "aws-amplify";
 import Tooltip from "@mui/material/Tooltip";
+import Link from "next/link";
 
 export default function Header() {
   const [auth, setAuth] = React.useState(true);
@@ -45,20 +46,24 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="inherit" style={{ marginTop: 10 }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <AccountTreeIcon />
-            {/* <MenuIcon /> */}
-          </IconButton>
-          login
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Reddit clone
-          </Typography>
+          <Link href="/">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => router.push("/")}
+              sx={{ mr: 2 }}
+            >
+              <AccountTreeIcon />
+              {/* <MenuIcon /> */}
+            </IconButton>
+          </Link>
+          <Link href="/">
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Reddit clone
+            </Typography>
+          </Link>
           {user && (
             <div>
               <Tooltip title="Create post">
