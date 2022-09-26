@@ -22,7 +22,7 @@ const theme = createTheme({
       primary: "#fff",
       secondary: "rgba(255, 255, 255, 0.7)",
       disabled: "rgba(255, 255, 255, 0.38)",
-      fontWeight: "normal",
+      // fontWeight: "",
       // hint: "rgba(255, 255, 255, 0.38)",
     },
   },
@@ -70,11 +70,13 @@ const theme = createTheme({
       fontSize: "1rem",
       lineHeight: 1.75,
       color: "#d1d5db",
+      fontWeight: "300",
     },
     body2: {
       fontSize: "1rem",
       lineHeight: 1.75,
       color: "#9CA3AF",
+      fontWeight: "300",
     },
   },
 });

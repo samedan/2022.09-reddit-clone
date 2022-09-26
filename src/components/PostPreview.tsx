@@ -30,7 +30,12 @@ export default function PostPreview({ post }: Props): ReactElement {
         console.log("No image");
       }
     }
-    getImageFromStorage();
+    console.log("post.image", post.image);
+    if (post.image !== null) {
+      getImageFromStorage();
+    } else {
+      setPostImage(null);
+    }
   }, []);
 
   return (
@@ -48,7 +53,12 @@ export default function PostPreview({ post }: Props): ReactElement {
         >
           {/* // Votes */}
           <Grid item style={{ maxWidth: 128 }}>
-            <Grid container direction="column" alignItems="center">
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              style={{ backgroundColor: "#0a0a0a", color: "#333333" }}
+            >
               <Grid item>
                 <IconButton color="inherit">
                   <ArrowUpwardIcon style={{ maxWidth: 16 }} />
@@ -74,43 +84,48 @@ export default function PostPreview({ post }: Props): ReactElement {
             </Grid>
           </Grid>
           {/* Content Post Preview*/}
-          <ButtonBase onClick={() => router.push(`/post/${post.id}`)}>
-            <Grid item style={{ maxWidth: "70%" }}>
-              <Grid container direction="column" alignItems="flex-start">
-                <Grid item>
-                  <Typography variant="body1">
-                    Posted {formatDatePosted(post.createdAt)} by{" "}
-                    <b>{post.owner}</b>
-                  </Typography>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="h2">{post.title}</Typography>
-                </Grid>
-                <Grid
-                  item
-                  style={{
-                    maxHeight: 32,
-                    overflowX: "hidden",
-                    overflowY: "hidden",
-                  }}
-                >
-                  <Typography variant="body1">{post.contents}</Typography>
-                </Grid>
-                {postImage && (
+          <Grid container>
+            <ButtonBase
+              onClick={() => router.push(`/post/${post.id}`)}
+              style={{ maxWidth: "90%" }}
+            >
+              <Grid item style={{ maxWidth: "90%" }}>
+                <Grid container direction="column" alignItems="flex-start">
                   <Grid item>
-                    <Image
-                      src={postImage}
-                      height={200}
-                      width={400}
-                      layout="intrinsic"
-                      alt="image"
-                    />
+                    <Typography variant="body1">
+                      Posted {formatDatePosted(post.createdAt)} by{" "}
+                      <b>{post.owner}</b>
+                    </Typography>
                   </Grid>
-                )}
+
+                  <Grid item>
+                    <Typography variant="h2">{post.title}</Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    style={{
+                      maxHeight: 32,
+                      overflowX: "hidden",
+                      overflowY: "hidden",
+                    }}
+                  >
+                    <Typography variant="body1">{post.contents}</Typography>
+                  </Grid>
+                  {postImage && (
+                    <Grid item>
+                      <Image
+                        src={postImage}
+                        height={200}
+                        width={400}
+                        layout="intrinsic"
+                        alt="image"
+                      />
+                    </Grid>
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
-          </ButtonBase>
+            </ButtonBase>
+          </Grid>
         </Grid>
       </Paper>
     </>
