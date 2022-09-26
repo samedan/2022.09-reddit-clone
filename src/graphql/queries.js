@@ -1,4 +1,3 @@
-/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -11,9 +10,9 @@ export const getPost = /* GraphQL */ `
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -121,6 +120,7 @@ export const listComments = /* GraphQL */ `
 export const getVote = /* GraphQL */ `
   query GetVote($id: ID!) {
     getVote(id: $id) {
+      id
       vote
       post {
         id
@@ -138,7 +138,6 @@ export const getVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy
@@ -153,6 +152,7 @@ export const listVotes = /* GraphQL */ `
   ) {
     listVotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        id
         vote
         post {
           id
@@ -164,7 +164,6 @@ export const listVotes = /* GraphQL */ `
           owner
         }
         postID
-        id
         createdAt
         updatedAt
         createdBy

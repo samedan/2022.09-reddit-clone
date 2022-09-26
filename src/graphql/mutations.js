@@ -1,19 +1,21 @@
-/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost($owner: String) {
-    onCreatePost(owner: $owner) {
+export const createPost = /* GraphQL */ `
+  mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
       id
       title
       contents
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -37,18 +39,21 @@ export const onCreatePost = /* GraphQL */ `
     }
   }
 `;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost($owner: String) {
-    onUpdatePost(owner: $owner) {
+export const updatePost = /* GraphQL */ `
+  mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
       id
       title
       contents
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -72,18 +77,21 @@ export const onUpdatePost = /* GraphQL */ `
     }
   }
 `;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost($owner: String) {
-    onDeletePost(owner: $owner) {
+export const deletePost = /* GraphQL */ `
+  mutation DeletePost(
+    $input: DeletePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    deletePost(input: $input, condition: $condition) {
       id
       title
       contents
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -107,9 +115,12 @@ export const onDeletePost = /* GraphQL */ `
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment($createdBy: String) {
-    onCreateComment(createdBy: $createdBy) {
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
       id
       post {
         id
@@ -134,9 +145,12 @@ export const onCreateComment = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment($createdBy: String) {
-    onUpdateComment(createdBy: $createdBy) {
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
       id
       post {
         id
@@ -161,9 +175,12 @@ export const onUpdateComment = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment($createdBy: String) {
-    onDeleteComment(createdBy: $createdBy) {
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
       id
       post {
         id
@@ -188,9 +205,13 @@ export const onDeleteComment = /* GraphQL */ `
     }
   }
 `;
-export const onCreateVote = /* GraphQL */ `
-  subscription OnCreateVote($createdBy: String) {
-    onCreateVote(createdBy: $createdBy) {
+export const createVote = /* GraphQL */ `
+  mutation CreateVote(
+    $input: CreateVoteInput!
+    $condition: ModelVoteConditionInput
+  ) {
+    createVote(input: $input, condition: $condition) {
+      id
       vote
       post {
         id
@@ -208,16 +229,19 @@ export const onCreateVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy
     }
   }
 `;
-export const onUpdateVote = /* GraphQL */ `
-  subscription OnUpdateVote($createdBy: String) {
-    onUpdateVote(createdBy: $createdBy) {
+export const updateVote = /* GraphQL */ `
+  mutation UpdateVote(
+    $input: UpdateVoteInput!
+    $condition: ModelVoteConditionInput
+  ) {
+    updateVote(input: $input, condition: $condition) {
+      id
       vote
       post {
         id
@@ -235,16 +259,19 @@ export const onUpdateVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy
     }
   }
 `;
-export const onDeleteVote = /* GraphQL */ `
-  subscription OnDeleteVote($createdBy: String) {
-    onDeleteVote(createdBy: $createdBy) {
+export const deleteVote = /* GraphQL */ `
+  mutation DeleteVote(
+    $input: DeleteVoteInput!
+    $condition: ModelVoteConditionInput
+  ) {
+    deleteVote(input: $input, condition: $condition) {
+      id
       vote
       post {
         id
@@ -262,7 +289,6 @@ export const onDeleteVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy

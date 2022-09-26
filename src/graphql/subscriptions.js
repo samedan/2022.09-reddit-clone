@@ -1,4 +1,3 @@
-/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -11,9 +10,9 @@ export const onCreatePost = /* GraphQL */ `
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -46,9 +45,9 @@ export const onUpdatePost = /* GraphQL */ `
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -81,9 +80,9 @@ export const onDeletePost = /* GraphQL */ `
       image
       votes {
         items {
+          id
           vote
           postID
-          id
           createdAt
           updatedAt
           createdBy
@@ -191,6 +190,7 @@ export const onDeleteComment = /* GraphQL */ `
 export const onCreateVote = /* GraphQL */ `
   subscription OnCreateVote($createdBy: String) {
     onCreateVote(createdBy: $createdBy) {
+      id
       vote
       post {
         id
@@ -208,7 +208,6 @@ export const onCreateVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy
@@ -218,6 +217,7 @@ export const onCreateVote = /* GraphQL */ `
 export const onUpdateVote = /* GraphQL */ `
   subscription OnUpdateVote($createdBy: String) {
     onUpdateVote(createdBy: $createdBy) {
+      id
       vote
       post {
         id
@@ -235,7 +235,6 @@ export const onUpdateVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy
@@ -245,6 +244,7 @@ export const onUpdateVote = /* GraphQL */ `
 export const onDeleteVote = /* GraphQL */ `
   subscription OnDeleteVote($createdBy: String) {
     onDeleteVote(createdBy: $createdBy) {
+      id
       vote
       post {
         id
@@ -262,7 +262,6 @@ export const onDeleteVote = /* GraphQL */ `
         owner
       }
       postID
-      id
       createdAt
       updatedAt
       createdBy

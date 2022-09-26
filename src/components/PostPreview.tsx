@@ -1,6 +1,12 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { Post } from "../API";
-import { ButtonBase, Grid } from "@mui/material";
+import {
+  CreateVoteInput,
+  CreateVoteMutation,
+  Post,
+  UpdateVoteInput,
+  UpdateVoteMutation,
+} from "../API";
+import { Alert, ButtonBase, Grid, Snackbar } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import IconButton from "@mui/material/IconButton";
@@ -10,7 +16,9 @@ import Paper from "@mui/material/Paper";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import formatDatePosted from "../lib/formatDatePosted";
-import { Storage } from "aws-amplify";
+import { Storage, API } from "aws-amplify";
+import { createVote, updateVote } from "../graphql/mutations";
+import { useUser } from "../context/AuthContext";
 
 interface Props {
   post: Post;
@@ -19,6 +27,36 @@ interface Props {
 export default function PostPreview({ post }: Props): ReactElement {
   const router = useRouter();
   const [postImage, setPostImage] = useState<string | undefined>(undefined);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [existingVote, setExistingVote] = useState<string | undefined>(
+    undefined
+  );
+  const [existingVoteId, setExistingVoteId] = useState<string | undefined>(
+    undefined
+  );
+  const [upvotes, setUpvotes] = useState<number>(
+    post.votes.items
+      ? post.votes.items.filter((v) => v.vote === "upvote").length
+      : 0
+  );
+  const [downvotes, setDownvotes] = useState<number>(
+    post.votes.items
+      ? post.votes.items.filter((v) => v.vote === "downvote").length
+      : 0
+  );
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      const tryFindVote = post.votes.items?.find(
+        (v) => v.createdBy === user.getUsername()
+      );
+      if (tryFindVote) {
+        setExistingVote(tryFindVote.vote);
+        setExistingVoteId(tryFindVote.id);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     async function getImageFromStorage() {
@@ -38,8 +76,76 @@ export default function PostPreview({ post }: Props): ReactElement {
     }
   }, []);
 
+  const addVote = async (voteType: string) => {
+    console.log("existingVote: ", existingVote);
+    if (existingVote && existingVote !== voteType) {
+      // if changeing the vote
+      const updateVoteInput: UpdateVoteInput = {
+        id: existingVoteId,
+        vote: voteType,
+        postID: post.id,
+      };
+      // updateVote rather than create vote
+      const updateVoteCount = (await API.graphql({
+        query: updateVote,
+        variables: { input: updateVoteInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as { data: UpdateVoteMutation };
+
+      if (voteType === "upvote") {
+        setUpvotes(upvotes + 1);
+        setDownvotes(downvotes - 1);
+      }
+      if (voteType === "downvote") {
+        setUpvotes(upvotes - 1);
+        setDownvotes(downvotes + 1);
+      }
+      setExistingVote(voteType);
+      setExistingVoteId(updateVoteCount.data.updateVote.id);
+      console.log("updated vote: ", updateVoteCount);
+    } else if (existingVote && existingVote === voteType) {
+      console.log("You already voted: ", existingVote);
+      setSnackbarVisible(true);
+    }
+    // if existing vote
+    else if (!existingVote) {
+      // NEW Vote, not existing vote
+      const createNewVoteInput: CreateVoteInput = {
+        vote: voteType,
+        postID: post.id,
+      };
+      // create vote for this post
+      const createNewVote = (await API.graphql({
+        query: createVote,
+        variables: { input: createNewVoteInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as { data: CreateVoteMutation };
+
+      if (createNewVote.data.createVote.vote === "downvote") {
+        setDownvotes(downvotes + 1);
+      }
+      if (createNewVote.data.createVote.vote === "upvote") {
+        setUpvotes(upvotes + 1);
+      }
+      setExistingVoteId(createNewVote.data.createVote.id);
+
+      console.log("created vote ", createNewVote);
+    }
+  };
+
   return (
     <>
+      {snackbarVisible && (
+        <Snackbar
+          open={snackbarVisible}
+          autoHideDuration={6000}
+          // onClose={handleClose}
+        >
+          <Alert severity="info" sx={{ width: "100%" }}>
+            You already voted {existingVote} for this post
+          </Alert>
+        </Snackbar>
+      )}
       <Paper elevation={3}>
         {/* @ts-ignore */}
         <Grid
@@ -60,25 +166,39 @@ export default function PostPreview({ post }: Props): ReactElement {
               style={{ backgroundColor: "#0a0a0a", color: "#333333" }}
             >
               <Grid item>
-                <IconButton color="inherit">
+                <IconButton
+                  color="inherit"
+                  onClick={() => addVote("upvote")}
+                  style={{ color: "white" }}
+                >
                   <ArrowUpwardIcon style={{ maxWidth: 16 }} />
                 </IconButton>
               </Grid>
               <Grid item>
                 <Grid container alignItems="center" direction="column">
                   <Grid item>
-                    <Typography variant="h6">
-                      {(post.upvotes - post.downvotes).toString()}
+                    <Typography variant="h6" style={{ color: "white" }}>
+                      {/* {(post.upvotes - post.downvotes).toString()} */}
+                      {/* {post.votes.items.filter((v) => v.vote === "upvote")
+                        .length -
+                        post.votes.items.filter((v) => v.vote === "downvote")
+                          .length} */}
+                      {upvotes - downvotes}
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="body2">votes</Typography>
+                    <Typography variant="body2" style={{ color: "white" }}>
+                      votes
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item>
-                <IconButton color="inherit">
-                  <ArrowDownwardIcon style={{ maxWidth: 16 }} />
+                <IconButton color="inherit" style={{ color: "white" }}>
+                  <ArrowDownwardIcon
+                    style={{ maxWidth: 16 }}
+                    onClick={() => addVote("downvote")}
+                  />
                 </IconButton>
               </Grid>
             </Grid>
