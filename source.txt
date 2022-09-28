@@ -23,6 +23,7 @@ amplify api gql-compile
 amplify push
 > Write files (mutations, queries etc)
 amplify codegen
+amplify codegen configure
 > Solve error : 
 amplify auth update
 

@@ -16,7 +16,7 @@ import Paper from "@mui/material/Paper";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import formatDatePosted from "../lib/formatDatePosted";
-import { Storage, API } from "aws-amplify";
+import { Storage, API, Auth } from "aws-amplify";
 import { createVote, updateVote } from "../graphql/mutations";
 import { useUser } from "../context/AuthContext";
 
@@ -44,31 +44,55 @@ export default function PostPreview({ post }: Props): ReactElement {
       ? post.votes.items.filter((v) => v.vote === "downvote").length
       : 0
   );
-  const { user } = useUser();
 
+  const { user } = useUser(); // user from Context
+
+  // format username: 2440be86-f7f8-46e5-bf55-2af0607b49d3::dpopescu
+  // async function checkUser() {
+  //   const awsUser = await Auth.currentAuthenticatedUser();
+  //   const userName = `${awsUser.attributes.sub}::${awsUser.username}`;
+  //   console.log("userName", userName);
+  //   // console.log("awsUser", awsUser);
+  //   // setUser(awsUser);
+  // }
+
+  // check for Existing Vote
   useEffect(() => {
     if (user) {
+      // const userNameFromContext = `${user?.attributes?.sub}::${user.username}`;
+      // console.log("userNameFromContext", userNameFromContext);
+
+      // console.log("userName", userName);
       const tryFindVote = post.votes.items?.find(
-        (v) => v.createdBy === user.getUsername()
+        // createdBy = 2440be86-f7f8-46e5-bf55-2af0607b49d3::dpopescu
+        //
+        (v) => v.createdBy === user.getUsername() && v.postID === post.id
+        // (v) => {
+        //   console.log("v.createdBy", v.createdBy);
+
+        //   v.createdBy === userNameFromContext;
+        // }
       );
+      console.log("tryFindVote", tryFindVote);
       if (tryFindVote) {
         setExistingVote(tryFindVote.vote);
         setExistingVoteId(tryFindVote.id);
       }
     }
-  }, [user]);
+  }, [user, post.votes.items]);
 
+  // Post Image
   useEffect(() => {
     async function getImageFromStorage() {
       try {
         const signedURL = await Storage.get(post.image); // get key form Storage.list*
-        console.log("signedURL ", signedURL);
+        // console.log("signedURL ", signedURL);
         setPostImage(signedURL);
       } catch (error) {
-        console.log("No image");
+        // console.log("No image");
       }
     }
-    console.log("post.image", post.image);
+    // console.log("post.image", post.image);
     if (post.image !== null) {
       getImageFromStorage();
     } else {
@@ -79,7 +103,7 @@ export default function PostPreview({ post }: Props): ReactElement {
   const addVote = async (voteType: string) => {
     console.log("existingVote: ", existingVote);
     if (existingVote && existingVote !== voteType) {
-      // if changeing the vote
+      // if changing the vote
       const updateVoteInput: UpdateVoteInput = {
         id: existingVoteId,
         vote: voteType,
@@ -94,13 +118,14 @@ export default function PostPreview({ post }: Props): ReactElement {
 
       if (voteType === "upvote") {
         setUpvotes(upvotes + 1);
-        setDownvotes(downvotes - 1);
+        // setDownvotes(downvotes - 1);
       }
       if (voteType === "downvote") {
-        setUpvotes(upvotes - 1);
+        // setUpvotes(upvotes - 1);
         setDownvotes(downvotes + 1);
       }
       setExistingVote(voteType);
+      console.log("existingVote", voteType);
       setExistingVoteId(updateVoteCount.data.updateVote.id);
       console.log("updated vote: ", updateVoteCount);
     } else if (existingVote && existingVote === voteType) {
@@ -127,6 +152,7 @@ export default function PostPreview({ post }: Props): ReactElement {
       if (createNewVote.data.createVote.vote === "upvote") {
         setUpvotes(upvotes + 1);
       }
+      setExistingVote(createNewVote.data.createVote.vote);
       setExistingVoteId(createNewVote.data.createVote.id);
 
       console.log("created vote ", createNewVote);
@@ -138,11 +164,13 @@ export default function PostPreview({ post }: Props): ReactElement {
       {snackbarVisible && (
         <Snackbar
           open={snackbarVisible}
-          autoHideDuration={6000}
+          autoHideDuration={3000}
           // onClose={handleClose}
+          onClose={() => setSnackbarVisible(false)}
         >
           <Alert severity="info" sx={{ width: "100%" }}>
-            You already voted {existingVote} for this post
+            You already voted{" "}
+            <span style={{ color: "red" }}>{existingVote}</span> for this post
           </Alert>
         </Snackbar>
       )}
@@ -194,11 +222,12 @@ export default function PostPreview({ post }: Props): ReactElement {
                 </Grid>
               </Grid>
               <Grid item>
-                <IconButton color="inherit" style={{ color: "white" }}>
-                  <ArrowDownwardIcon
-                    style={{ maxWidth: 16 }}
-                    onClick={() => addVote("downvote")}
-                  />
+                <IconButton
+                  color="inherit"
+                  style={{ color: "white" }}
+                  onClick={() => addVote("downvote")}
+                >
+                  <ArrowDownwardIcon style={{ maxWidth: 16 }} />
                 </IconButton>
               </Grid>
             </Grid>

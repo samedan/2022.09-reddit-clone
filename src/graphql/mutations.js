@@ -15,6 +15,15 @@ export const createPost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -25,6 +34,15 @@ export const createPost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -53,6 +71,15 @@ export const updatePost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -63,6 +90,15 @@ export const updatePost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -91,6 +127,15 @@ export const deletePost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -101,6 +146,15 @@ export const deletePost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -128,9 +182,25 @@ export const createComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -158,9 +228,25 @@ export const updateComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -188,9 +274,25 @@ export const deleteComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -219,9 +321,25 @@ export const createVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -249,9 +367,25 @@ export const updateVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -279,9 +413,25 @@ export const deleteVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt

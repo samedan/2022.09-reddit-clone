@@ -12,6 +12,15 @@ export const onCreatePost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -22,6 +31,15 @@ export const onCreatePost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -47,6 +65,15 @@ export const onUpdatePost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -57,6 +84,15 @@ export const onUpdatePost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -82,6 +118,15 @@ export const onDeletePost = /* GraphQL */ `
         items {
           id
           vote
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           createdAt
           updatedAt
@@ -92,6 +137,15 @@ export const onDeletePost = /* GraphQL */ `
       comments {
         items {
           id
+          post {
+            id
+            title
+            contents
+            image
+            createdAt
+            updatedAt
+            owner
+          }
           postID
           content
           createdAt
@@ -116,9 +170,25 @@ export const onCreateComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -143,9 +213,25 @@ export const onUpdateComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -170,9 +256,25 @@ export const onDeleteComment = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -198,9 +300,25 @@ export const onCreateVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -225,9 +343,25 @@ export const onUpdateVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
@@ -252,9 +386,25 @@ export const onDeleteVote = /* GraphQL */ `
         contents
         image
         votes {
+          items {
+            id
+            vote
+            postID
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         comments {
+          items {
+            id
+            postID
+            content
+            createdAt
+            updatedAt
+            createdBy
+          }
           nextToken
         }
         createdAt
