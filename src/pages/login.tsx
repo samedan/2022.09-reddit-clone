@@ -61,7 +61,7 @@ export default function Login() {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, backgroundColor: "gray", padding: 15 }}
       >
         <Grid item>
           <TextField
@@ -70,6 +70,12 @@ export default function Login() {
             variant="outlined"
             error={errors.username ? true : false}
             type="text"
+            style={{
+              // border: "1px dashed #666666",
+              backgroundColor: "#0d1218",
+              color: "white",
+              marginBottom: 15,
+            }}
             helperText={errors.username ? errors.username.message : null}
             {...register("username", {
               // required: { value: true, message: "Please enter a username" },
@@ -92,6 +98,11 @@ export default function Login() {
             variant="outlined"
             error={errors.password ? true : false}
             type="password"
+            style={{
+              // border: "1px dashed #666666",
+              backgroundColor: "#0d1218",
+              color: "white",
+            }}
             helperText={errors.password ? errors.password.message : null}
             {...register("password", {
               // required: { value: true, message: "Please enter a password" },

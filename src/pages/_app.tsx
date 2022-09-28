@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../theme";
 
-import { Amplify, Auth } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import awsmobile from "../aws-exports";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header";

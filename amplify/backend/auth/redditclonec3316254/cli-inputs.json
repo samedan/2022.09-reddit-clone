@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "redditclonec3316254_identitypool_c3316254",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "redditc3316254",
     "userPoolName": "redditclonec3316254_userpool_c3316254",
     "autoVerifiedAttributes": [
@@ -32,7 +32,7 @@
       "email"
     ],
     "userpoolClientLambdaRole": "redditc3316254_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "c3316254",
     "resourceName": "redditclonec3316254",
     "authSelections": "identityPoolAndUserPool",
@@ -64,6 +64,6 @@
     },
     "permissions": [],
     "authProviders": [],
-    "thirdPartyAuth": true
+    "thirdPartyAuth": false
   }
 }

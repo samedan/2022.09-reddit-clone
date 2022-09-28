@@ -28,6 +28,7 @@ export default function PostPreview({ post }: Props): ReactElement {
   const router = useRouter();
   const [postImage, setPostImage] = useState<string | undefined>(undefined);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [createAccountMessage, setCreateAccountMessage] = useState(false);
   const [existingVote, setExistingVote] = useState<string | undefined>(
     undefined
   );
@@ -101,66 +102,82 @@ export default function PostPreview({ post }: Props): ReactElement {
   }, []);
 
   const addVote = async (voteType: string) => {
-    console.log("existingVote: ", existingVote);
-    if (existingVote && existingVote !== voteType) {
-      // if changing the vote
-      const updateVoteInput: UpdateVoteInput = {
-        id: existingVoteId,
-        vote: voteType,
-        postID: post.id,
-      };
-      // updateVote rather than create vote
-      const updateVoteCount = (await API.graphql({
-        query: updateVote,
-        variables: { input: updateVoteInput },
-        authMode: "AMAZON_COGNITO_USER_POOLS",
-      })) as { data: UpdateVoteMutation };
+    if (user) {
+      console.log("existingVote: ", existingVote);
+      if (existingVote && existingVote !== voteType) {
+        // if changing the vote
+        const updateVoteInput: UpdateVoteInput = {
+          id: existingVoteId,
+          vote: voteType,
+          postID: post.id,
+        };
+        // updateVote rather than create vote
+        const updateVoteCount = (await API.graphql({
+          query: updateVote,
+          variables: { input: updateVoteInput },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as { data: UpdateVoteMutation };
 
-      if (voteType === "upvote") {
-        setUpvotes(upvotes + 1);
-        // setDownvotes(downvotes - 1);
+        if (voteType === "upvote") {
+          setUpvotes(upvotes + 1);
+          // setDownvotes(downvotes - 1);
+        }
+        if (voteType === "downvote") {
+          // setUpvotes(upvotes - 1);
+          setDownvotes(downvotes + 1);
+        }
+        setExistingVote(voteType);
+        console.log("existingVote", voteType);
+        setExistingVoteId(updateVoteCount.data.updateVote.id);
+        console.log("updated vote: ", updateVoteCount);
+      } else if (existingVote && existingVote === voteType) {
+        console.log("You already voted: ", existingVote);
+        setSnackbarVisible(true);
       }
-      if (voteType === "downvote") {
-        // setUpvotes(upvotes - 1);
-        setDownvotes(downvotes + 1);
-      }
-      setExistingVote(voteType);
-      console.log("existingVote", voteType);
-      setExistingVoteId(updateVoteCount.data.updateVote.id);
-      console.log("updated vote: ", updateVoteCount);
-    } else if (existingVote && existingVote === voteType) {
-      console.log("You already voted: ", existingVote);
-      setSnackbarVisible(true);
-    }
-    // if existing vote
-    else if (!existingVote) {
-      // NEW Vote, not existing vote
-      const createNewVoteInput: CreateVoteInput = {
-        vote: voteType,
-        postID: post.id,
-      };
-      // create vote for this post
-      const createNewVote = (await API.graphql({
-        query: createVote,
-        variables: { input: createNewVoteInput },
-        authMode: "AMAZON_COGNITO_USER_POOLS",
-      })) as { data: CreateVoteMutation };
+      // if existing vote
+      else if (!existingVote) {
+        // NEW Vote, not existing vote
+        const createNewVoteInput: CreateVoteInput = {
+          vote: voteType,
+          postID: post.id,
+        };
+        // create vote for this post
+        const createNewVote = (await API.graphql({
+          query: createVote,
+          variables: { input: createNewVoteInput },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as { data: CreateVoteMutation };
 
-      if (createNewVote.data.createVote.vote === "downvote") {
-        setDownvotes(downvotes + 1);
-      }
-      if (createNewVote.data.createVote.vote === "upvote") {
-        setUpvotes(upvotes + 1);
-      }
-      setExistingVote(createNewVote.data.createVote.vote);
-      setExistingVoteId(createNewVote.data.createVote.id);
+        if (createNewVote.data.createVote.vote === "downvote") {
+          setDownvotes(downvotes + 1);
+        }
+        if (createNewVote.data.createVote.vote === "upvote") {
+          setUpvotes(upvotes + 1);
+        }
+        setExistingVote(createNewVote.data.createVote.vote);
+        setExistingVoteId(createNewVote.data.createVote.id);
 
-      console.log("created vote ", createNewVote);
+        console.log("created vote ", createNewVote);
+      }
+    } else {
+      setCreateAccountMessage(true);
     }
   };
 
   return (
     <>
+      {createAccountMessage && (
+        <Snackbar
+          open={createAccountMessage}
+          autoHideDuration={3000}
+          // onClose={handleClose}
+          onClose={() => setCreateAccountMessage(false)}
+        >
+          <Alert severity="info" sx={{ width: "100%" }}>
+            Login or Signup to create or vote on a post
+          </Alert>
+        </Snackbar>
+      )}
       {snackbarVisible && (
         <Snackbar
           open={snackbarVisible}
@@ -197,7 +214,9 @@ export default function PostPreview({ post }: Props): ReactElement {
                 <IconButton
                   color="inherit"
                   onClick={() => addVote("upvote")}
-                  style={{ color: "white" }}
+                  style={{
+                    color: existingVote === "upvote" ? "green" : "white",
+                  }}
                 >
                   <ArrowUpwardIcon style={{ maxWidth: 16 }} />
                 </IconButton>
@@ -224,7 +243,9 @@ export default function PostPreview({ post }: Props): ReactElement {
               <Grid item>
                 <IconButton
                   color="inherit"
-                  style={{ color: "white" }}
+                  style={{
+                    color: existingVote === "downvote" ? "green" : "white",
+                  }}
                   onClick={() => addVote("downvote")}
                 >
                   <ArrowDownwardIcon style={{ maxWidth: 16 }} />

@@ -107,7 +107,11 @@ export default function Header() {
           )}
           {!user && (
             <div style={{ display: "flex", flexDirection: "row" }}>
-              <Button variant="outlined" onClick={() => router.push("/login")}>
+              <Button
+                variant="contained"
+                onClick={() => router.push("/login")}
+                style={{ marginRight: "5px" }}
+              >
                 Login
               </Button>
               <Button
