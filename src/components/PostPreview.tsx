@@ -192,111 +192,112 @@ export default function PostPreview({ post }: Props): ReactElement {
         </Snackbar>
       )}
       <Paper elevation={3}>
-        {/* @ts-ignore */}
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-          wrap="nowrap"
-          spacing={3}
-          style={{ padding: 24, marginTop: 24 }}
-        >
-          {/* // Votes */}
-          <Grid item style={{ maxWidth: 128 }}>
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              style={{ backgroundColor: "#0a0a0a", color: "#333333" }}
-            >
-              <Grid item>
-                <IconButton
-                  color="inherit"
-                  onClick={() => addVote("upvote")}
-                  style={{
-                    color: existingVote === "upvote" ? "green" : "white",
-                  }}
-                >
-                  <ArrowUpwardIcon style={{ maxWidth: 16 }} />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <Grid container alignItems="center" direction="column">
-                  <Grid item>
-                    <Typography variant="h6" style={{ color: "white" }}>
-                      {/* {(post.upvotes - post.downvotes).toString()} */}
-                      {/* {post.votes.items.filter((v) => v.vote === "upvote")
+        <>
+          <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            wrap="nowrap"
+            spacing={3}
+            style={{ padding: 24, marginTop: 24 }}
+          >
+            {/* // Votes */}
+            <Grid item style={{ maxWidth: 128 }}>
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                style={{ backgroundColor: "#0a0a0a", color: "#333333" }}
+              >
+                <Grid item>
+                  <IconButton
+                    color="inherit"
+                    onClick={() => addVote("upvote")}
+                    style={{
+                      color: existingVote === "upvote" ? "green" : "white",
+                    }}
+                  >
+                    <ArrowUpwardIcon style={{ maxWidth: 16 }} />
+                  </IconButton>
+                </Grid>
+                <Grid item>
+                  <Grid container alignItems="center" direction="column">
+                    <Grid item>
+                      <Typography variant="h6" style={{ color: "white" }}>
+                        {/* {(post.upvotes - post.downvotes).toString()} */}
+                        {/* {post.votes.items.filter((v) => v.vote === "upvote")
                         .length -
                         post.votes.items.filter((v) => v.vote === "downvote")
                           .length} */}
-                      {upvotes - downvotes}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="body2" style={{ color: "white" }}>
-                      votes
-                    </Typography>
+                        {upvotes - downvotes}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2" style={{ color: "white" }}>
+                        votes
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item>
-                <IconButton
-                  color="inherit"
-                  style={{
-                    color: existingVote === "downvote" ? "green" : "white",
-                  }}
-                  onClick={() => addVote("downvote")}
-                >
-                  <ArrowDownwardIcon style={{ maxWidth: 16 }} />
-                </IconButton>
+                <Grid item>
+                  <IconButton
+                    color="inherit"
+                    style={{
+                      color: existingVote === "downvote" ? "green" : "white",
+                    }}
+                    onClick={() => addVote("downvote")}
+                  >
+                    <ArrowDownwardIcon style={{ maxWidth: 16 }} />
+                  </IconButton>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          {/* Content Post Preview*/}
-          <Grid container>
-            <ButtonBase
-              onClick={() => router.push(`/post/${post.id}`)}
-              style={{ maxWidth: "90%" }}
-            >
-              <Grid item style={{ maxWidth: "90%" }}>
-                <Grid container direction="column" alignItems="flex-start">
-                  <Grid item>
-                    <Typography variant="body1">
-                      Posted {formatDatePosted(post.createdAt)} by{" "}
-                      <b>{post.owner}</b>
-                    </Typography>
-                  </Grid>
-
-                  <Grid item>
-                    <Typography variant="h2">{post.title}</Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    style={{
-                      maxHeight: 32,
-                      overflowX: "hidden",
-                      overflowY: "hidden",
-                    }}
-                  >
-                    <Typography variant="body1">{post.contents}</Typography>
-                  </Grid>
-                  {postImage && (
+            {/* Content Post Preview*/}
+            <Grid container>
+              <ButtonBase
+                onClick={() => router.push(`/post/${post.id}`)}
+                style={{ maxWidth: "90%" }}
+              >
+                <Grid item style={{ maxWidth: "90%" }}>
+                  <Grid container direction="column" alignItems="flex-start">
                     <Grid item>
-                      <Image
-                        src={postImage}
-                        height={200}
-                        width={400}
-                        layout="intrinsic"
-                        alt="image"
-                      />
+                      <Typography variant="body1">
+                        Posted {formatDatePosted(post.createdAt)} by{" "}
+                        <b>{post.owner}</b>
+                      </Typography>
                     </Grid>
-                  )}
+
+                    <Grid item>
+                      <Typography variant="h2">{post.title}</Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      style={{
+                        maxHeight: 32,
+                        overflowX: "hidden",
+                        overflowY: "hidden",
+                      }}
+                    >
+                      <Typography variant="body1">{post.contents}</Typography>
+                    </Grid>
+                    {postImage && (
+                      <Grid item>
+                        <Image
+                          src={postImage}
+                          height={200}
+                          width={400}
+                          layout="intrinsic"
+                          alt="image"
+                        />
+                      </Grid>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            </ButtonBase>
+              </ButtonBase>
+            </Grid>
           </Grid>
-        </Grid>
+        </>
       </Paper>
     </>
   );
