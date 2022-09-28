@@ -98,7 +98,7 @@ export default function ImageDropzone({ file, setFile }: Props) {
           <Grid
             container
             alignItems="center"
-            justify="center"
+            // justify="center"
             direction="column"
             spacing={1}
           >

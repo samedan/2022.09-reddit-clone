@@ -197,10 +197,15 @@ export default function PostPreview({ post }) {
       )}
       <Paper elevation={3}>
         <>
-          <Grid container>
-            {/* container direction="row" justify="flex-start"
-            alignItems="flex-start" wrap="nowrap" spacing={3}
-            style={ padding: 24, marginTop: 24 } */}
+          <Grid
+            container
+            direction="row"
+            // justify="flex-start"
+            alignItems="flex-start"
+            wrap="nowrap"
+            spacing={3}
+            style={{ padding: 24, marginTop: 24 }}
+          >
             <Grid item style={{ maxWidth: 128 }}>
               {/* // Votes */}
               <Grid
