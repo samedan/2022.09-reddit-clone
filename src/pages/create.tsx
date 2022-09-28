@@ -14,14 +14,15 @@ import {
 } from "../API";
 import { useRouter } from "next/router";
 
-interface Props {}
+// interface Props {}
 interface IFormInput {
   title: string;
   content: string;
   image?: string;
 }
 
-export default function Create({}: Props): ReactElement {
+// eslint-disable-next-line no-empty-pattern
+export default function Create(): ReactElement {
   const [file, setFile] = useState<File>();
 
   const router = useRouter();

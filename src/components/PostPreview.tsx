@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { ReactElement, useState, useEffect } from "react";
 import {
   CreateVoteInput,
@@ -20,11 +21,12 @@ import { Storage, API, Auth } from "aws-amplify";
 import { createVote, updateVote } from "../graphql/mutations";
 import { useUser } from "../context/AuthContext";
 
-interface Props {
-  post: Post;
-}
+// interface Props {
+//   post: Post;
+// }
 
-export default function PostPreview({ post }: Props): ReactElement {
+// eslint-disable-next-line react/prop-types
+export default function PostPreview({ post }) {
   const router = useRouter();
   const [postImage, setPostImage] = useState<string | undefined>(undefined);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -36,11 +38,13 @@ export default function PostPreview({ post }: Props): ReactElement {
     undefined
   );
   const [upvotes, setUpvotes] = useState<number>(
+    // eslint-disable-next-line react/prop-types
     post.votes.items
       ? post.votes.items.filter((v) => v.vote === "upvote").length
       : 0
   );
   const [downvotes, setDownvotes] = useState<number>(
+    // eslint-disable-next-line react/prop-types
     post.votes.items
       ? post.votes.items.filter((v) => v.vote === "downvote").length
       : 0
@@ -193,17 +197,12 @@ export default function PostPreview({ post }: Props): ReactElement {
       )}
       <Paper elevation={3}>
         <>
-          <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            wrap="nowrap"
-            spacing={3}
-            style={{ padding: 24, marginTop: 24 }}
-          >
-            {/* // Votes */}
+          <Grid container>
+            {/* container direction="row" justify="flex-start"
+            alignItems="flex-start" wrap="nowrap" spacing={3}
+            style={ padding: 24, marginTop: 24 } */}
             <Grid item style={{ maxWidth: 128 }}>
+              {/* // Votes */}
               <Grid
                 container
                 direction="column"
