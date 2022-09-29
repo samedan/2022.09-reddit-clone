@@ -11,10 +11,7 @@ import awsmobile from "../aws-exports";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header";
 
-console.log(awsmobile);
 Amplify.configure({ ...awsmobile, ssr: true });
-
-console.log("process.env.NODE_ENV", process.env.AWS_PROJECT_REGION);
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
