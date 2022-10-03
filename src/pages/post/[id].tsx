@@ -120,6 +120,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post: postsQuery.data.getPost as Post,
     },
+    revalidate: 10, // in seconds
   };
 };
 
